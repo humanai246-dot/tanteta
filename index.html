@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Confetti yang jatuh dari atas saat buka halaman */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+             width: 100%;
+            position: relative;
+            z-index: 2;
+            margin: 20px 0;
+        }
+
+        h1 {
+            color: #ff1744;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .heart {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: beat 1s infinite;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.3em;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .question {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff1744;
+            margin: 30px 0 40px 0;
+        }
+
+        .button-container {
+            position: relative;
+            height: 150px;
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 15px 40px;
+            margin: 10px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: absolute;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        #btnYa {
+            background: #ff1744;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 23, 68, 0.4);
+            left: 50%;
+            transform: translateX(-150%);
+        }
+
+        #btnYa:hover {
+            box-shadow: 0 8px 25px rgba(255, 23, 68, 0.6);
+            transform: translateX(-150%) scale(1.1);
+        }
+
+        #btnTidak {
+            background: #e0e0e0;
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            left: 50%;
+            transform: translateX(50%);
+            transition: all 0.3s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .invitation {
+            animation: fadeIn 1s;
+        }
+
+        .invitation h2 {
+            color: #ff1744;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .invitation p {
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+
+        .celebration {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        /* Form untuk kirim notifikasi email */
+        .email-form {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff5f7;
+            border-radius: 15px;
+        }
+
+        .email-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ffcdd2;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+
+        .email-form input:focus {
+            outline: none;
+            border-color: #ff1744;
+        }
+
+        .email-form button {
+            position: relative;
+            left: 0;
+            transform: none;
+            width: 100%;
+            margin-top: 10px;
+            background: #ff1744;
+            color: white;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .success {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti container untuk hujan saat buka halaman -->
+    <div class="confetti-container" id="initialConfetti"></div>
+
+    <div class="container">
+        <div id="question-section">
+            <h1>Happy Valentine's Day! 💝</h1>
+            <div class="heart">❤️</div>
+            <p>Hai! Hari Valentine sebentar lagi nih...</p>
+            <p class="question">Mau jadi Valentine aku? 🌹</p>
+            
+            <div class="button-container">
+                <button id="btnYa" onclick="handleYes()">Ya! 💕</button>
+                <button id="btnTidak" onmouseover="moveButton()" onclick="moveButton()">Tidak</button>
+            </div>
+        </div>
+
+        <div id="invitation-section" class="hidden invitation">
+            <div class="celebration">🎉💖🎊</div>
+            <h2>Yeay! Aku senang banget! 😍</h2>
+            <p>Luv u soo much</p>
+            <p>📅 <strong>Tanggal:</strong> 14 Februari 2026</p>
+            <p>🕐 <strong>Waktu:</strong> 21:00 WIB</p>
+            <p>📍 <strong>Tempat:</strong> pool party or dinner with me </p>
+            
+            <!-- Form untuk kirim notifikasi email -->
+            <div class="email-form">
+                <h3 style="color: #ff1744; margin-bottom: 15px;">📧 Kirim Konfirmasi ke Email Aku yaaa!!!</h3>
+                <input type="text" id="userName" placeholder="Nama kamu" required>
+                <input type="email" id="userEmail" placeholder="Email kamu" required>
+                <input type="text" id="userMessage" placeholder="Pesan singkat (opsional)">
+                <button onclick="sendEmail()">Kirim Konfirmasi 💌</button>
+                <div id="statusMessage"></div>
+            </div>
+            
+            <p style="margin-top: 30px; color: #ff1744; font-weight: bold;">
+                Aku tunggu ya! 💕✨
+            </p>
+            <div class="celebration">🌹💝🌹</div>
+        </div>
+    </div>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <script>
+        // Hujan confetti saat pertama kali buka halaman
+        window.addEventListener('load', function() {
+            createInitialConfetti();
+        });
+
+        function createInitialConfetti() {
+            const colors = ['#ff1744', '#ff4081', '#f50057', '#ff6b9d', '#ffc0cb', '#ffeb3b', '#4caf50'];
+            const container = document.getElementById('initialConfetti');
+            
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.width = (Math.random() * 8 + 5) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    container.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 50);
+            }
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('btnTidak');
+            const container = document.querySelector('.button-container');
+            
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+            btn.style.transform = 'none';
+        }
+
+       function handleYes() {
+    document.getElementById('question-section').classList.add('hidden');
+    document.getElementById('invitation-section').classList.remove('hidden');
+    
+    createCelebrationConfetti();
+    
+    // Play YouTube video (background music)
+    playYouTubeMusic();
+}
+
+function playYouTubeMusic() {
+    // Alternatif: Pakai audio element dengan file MP3
+    // Atau tampilkan tombol play untuk user
+    const audioPlayer = document.createElement('audio');
+    audioPlayer.id = 'bgMusic';
+    audioPlayer.loop = true;
+    audioPlayer.volume = 0.3;
+    
+    // Download lagu dari YouTube menggunakan YouTube to MP3 converter
+    // Lalu upload file MP3 ke folder yang sama dengan index.html
+    audioPlayer.src = 'kota-ini-tak-sama-tanpamu.mp3';
+    
+    document.body.appendChild(audioPlayer);
+    
+    // Try to play
+    audioPlayer.play().catch(function(error) {
+        console.log('Autoplay prevented. User needs to interact first.');
+        // Fallback: tampilkan tombol play
+        showPlayButton(audioPlayer);
+    });
+}
+
+function showPlayButton(audio) {
+    const playBtn = document.createElement('button');
+    playBtn.textContent = '🎵 Putar Musik';
+    playBtn.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ff1744;
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1em;
+        z-index: 9999;
+        box-shadow: 0 5px 15px rgba(255, 23, 68, 0.4);
+    `;
+    playBtn.onclick = function() {
+        audio.play();
+        playBtn.remove();
+    };
+    document.body.appendChild(playBtn);
+}
+
+        function createCelebrationConfetti() {
+            const colors = ['#ff1744', '#ff4081', '#f50057', '#ff6b9d', '#ffc0cb'];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animation = `confetti-fall ${Math.random() * 2 + 2}s linear forwards`;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 40);
+            }
+        }
+
+        // ===== SETUP EMAIL =====
+        // Inisialisasi EmailJS dengan Public Key kamu
+        (function(){
+            emailjs.init("SvdTAUye2x8grgK4x"); // <-- GANTI INI!
+        })();
+
+        function sendEmail() {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const message = document.getElementById('userMessage').value || "Terima kasih ajakannya! 💕";
+            
+            if (!name || !email) {
+                showStatus('Mohon isi nama dan email ya! 😊', 'error');
+                return;
+            }
+
+            // Parameter email yang akan dikirim
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                message: message,
+                to_name: 'Syaka', // <-- Ganti dengan nama kamu
+            };
+
+            // Kirim email menggunakan EmailJS
+            emailjs.send('service_iwa3son', 'template_oxil95h', templateParams) // <-- GANTI INI!
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    showStatus('Email berhasil dikirim! 💌', 'success');
+                    // Clear form
+                    document.getElementById('userName').value = '';
+                    document.getElementById('userEmail').value = '';
+                    document.getElementById('userMessage').value = '';
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    showStatus('Gagal mengirim email. Coba lagi ya! 😢', 'error');
+                });
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + type;
+            
+            setTimeout(() => {
+                statusDiv.textContent = '';
+                statusDiv.className = 'status-message';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
